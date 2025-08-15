@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Voice Studio — Protected</title>
+  <link rel="stylesheet" href="style.css" />
+  <meta name="theme-color" content="#0b1220" />
+</head>
+<body>
+  <!-- Login Screen -->
+  <div id="login-screen" class="screen">
+    <div class="card small">
+      <h2>🔒 لاگ اِن</h2>
+      <p class="muted">ویب کھولنے کے لئے پاس ورڈ درج کریں</p>
+      <input type="password" id="password-input" placeholder="Password" autocomplete="current-password" />
+      <button id="login-btn">داخل ہوں</button>
+      <p id="login-error" class="error"></p>
+    </div>
+  </div>
+
+  <!-- App Screen -->
+  <div id="app-screen" class="screen hidden">
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo">🎙️</span>
+        <h1>Voice Studio</h1>
+      </div>
+      <div class="actions">
+        <!-- 3-dots menu -->
+        <div class="menu">
+          <button id="menu-btn" class="icon-btn" title="Menu">⋮</button>
+          <div id="menu-panel" class="menu-panel hidden">
+            <button class="menu-item" id="menu-change-pass">🔑 Change Password</button>
+            <button class="menu-item" id="menu-export-history">🧾 Export History</button>
+            <button class="menu-item" id="menu-lyrics-history">📜 Lyrics History</button>
+            <button class="menu-item" id="menu-email-backup">✉️ Email Backup</button>
+            <button class="menu-item danger" id="menu-logout">🚪 Log Out</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hidden sheets/modals triggered by menu -->
+    <section id="sheet-change-pass" class="sheet hidden">
+      <div class="sheet-card">
+        <h3>🔑 پاس ورڈ تبدیل کریں</h3>
+        <div class="row">
+          <input type="password" id="current-password" placeholder="موجودہ پاس ورڈ" />
+          <input type="password" id="new-password" placeholder="نیا پاس ورڈ" />
+        </div>
+        <button id="change-password-btn">تبدیل کریں</button>
+        <p id="password-change-msg" class="info"></p>
+        <button class="ghost full mt8" data-close="sheet-change-pass">بند کریں</button>
+      </div>
+    </section>
+
+    <section id="sheet-lyrics" class="sheet hidden">
+      <div class="sheet-card">
+        <h3>📜 لیرکس ہسٹری</h3>
+        <ul id="history-list"></ul>
+        <div class="row wrap">
+          <button id="clear-history-btn" class="danger">ہسٹری صاف کریں</button>
+          <button id="export-history" class="ghost">🧾 ہسٹری ایکسپورٹ</button>
+        </div>
+        <button class="ghost full mt8" data-close="sheet-lyrics">بند کریں</button>
+      </div>
+    </section>
+
+    <section id="sheet-email" class="sheet hidden">
+      <div class="sheet-card">
+        <h3>✉️ ای میل بیک اَپ</h3>
+        <p class="muted">EmailJS optional ہے — نہ دیں تو MailTo بیک اپ چلے گا۔</p>
+        <div class="row">
+          <input type="text" id="email-to" placeholder="آپ کا ای میل" value="yasir174282@gmail.com"/>
+        </div>
+        <div class="row">
+          <input type="text" id="emailjs-service" placeholder="EmailJS Service ID (optional)" />
+          <input type="text" id="emailjs-template" placeholder="EmailJS Template ID (optional)" />
+        </div>
+        <div class="row">
+          <input type="text" id="emailjs-key" placeholder="EmailJS Public Key (optional)" />
+        </div>
+        <div class="row wrap">
+          <button id="email-pass-btn" class="ghost">✉️ پاس ورڈ ای میل کریں</button>
+          <button id="email-history-btn" class="ghost">✉️ ہسٹری ای میل کریں</button>
+          <a id="mailto-pass" class="link tiny" href="#">MailTo: Password</a>
+          <a id="mailto-history" class="link tiny" href="#">MailTo: History</a>
+        </div>
+        <button class="ghost full mt8" data-close="sheet-email">بند کریں</button>
+      </div>
+    </section>
+
+    <section class="grid">
+      <!-- TTS panel -->
+      <div class="card span2">
+        <h3>🗣️ متن سے آواز (TTS)</h3>
+        <textarea id="text-input" rows="6" placeholder="یہاں ٹیکسٹ لکھیں... ہر لائن الگ lyric سمجھی جائے گی۔"></textarea>
+
+        <label for="lang-select">زبان / Language</label>
+        <select id="lang-select"></select>
+
+        <label for="voice-style">آواز / Voice Style</label>
+        <select id="voice-style">
+          <option value="male">Male (Normal)</option>
+          <option value="deep">Male (Deep)</option>
+          <option value="female">Female (Soft)</option>
+          <option value="tom">Talking Tom (Funny)</option>
+          <option value="chipmunk">Cartoon (Chipmunk)</option>
+          <option value="robot">Robot</option>
+          <option value="echo">Echo Effect</option>
+        </select>
+
+        <div class="row wrap">
+          <label class="chk"><input type="checkbox" id="auto-timing" checked /> Karaoke Auto‑Timing</label>
+          <label class="chk"><input type="checkbox" id="auto-tune" /> Auto‑Tune (Beta)</label>
+          <select id="tune-key">
+            <option value="C">Key: C</option>
+            <option value="D">Key: D</option>
+            <option value="E">Key: E</option>
+            <option value="F">Key: F</option>
+            <option value="G">Key: G</option>
+            <option value="A">Key: A</option>
+            <option value="B">Key: B</option>
+          </select>
+          <select id="tune-scale">
+            <option value="major">Major</option>
+            <option value="minor">Minor</option>
+          </select>
+        </div>
+
+        <div class="row wrap">
+          <button id="generate-btn">🎧 چلائیں</button>
+          <button id="download-btn" disabled>⬇️ MP3 ڈاؤن لوڈ</button>
+        </div>
+
+        <audio id="audio-player" controls class="full hidden"></audio>
+        <p class="tiny muted">Note: یہ ڈیمو Google Translate TTS (unofficial) + WebAudio effects استعمال کرتا ہے۔ Auto‑Tune بیسک correction ہے، perfect melody نہیں۔</p>
+      </div>
+
+      <!-- Karaoke panel -->
+      <div class="card">
+        <h3>🎼 Karaoke Preview</h3>
+        <div id="karaoke-box" class="karaoke"></div>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
